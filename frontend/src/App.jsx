@@ -177,7 +177,7 @@ const ElectronicStore = () => {
                 <h2 className="text-xl font-semibold text-gray-800">
                   {product.name}
                 </h2>
-                <p className="text-gray-600 mt-2">${product.price}</p>
+                <p className="text-gray-600 mt-2">€{product.price}</p>
                 <button
                   onClick={() => addToCart(product)}
                   className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
@@ -271,7 +271,7 @@ const ElectronicStore = () => {
                   >
                     <div>
                       <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-gray-600">${item.price}</p>
+                      <p className="text-gray-600">€{item.price}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
@@ -299,7 +299,7 @@ const ElectronicStore = () => {
                 <div className="mt-4">
                   <div className="flex justify-between font-bold mb-4">
                     <span>Iš viso:</span>
-                    <span>${getTotalPrice().toFixed(2)}</span>
+                    <span>€{getTotalPrice().toFixed(2)}</span>
                   </div>
                   <button
                     onClick={() => alert("Užsakymas pateiktas!")}

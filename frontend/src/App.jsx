@@ -7,9 +7,10 @@ import {
   ShoppingCartOutlined,
   CloseOutlined,
   UserOutlined,
-  LockOutlined,
 } from "@ant-design/icons";
 import { Helmet } from "react-helmet";
+import { Button, Form, Input } from "antd";
+import FormItem from "antd/es/form/FormItem";
 
 const ElectronicStore = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -18,10 +19,31 @@ const ElectronicStore = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [chatMessage, setChatMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginForm, setLoginForm] = useState({
-    username: "",
-    password: "",
-  });
+
+  const [form] = Form.useForm();
+
+  const onFinish = async (values) => {
+    try {
+      const response = await fetch("http://backend:3000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Registration successful:", data);
+        form.resetFields();
+      } else {
+        console.error("Registration failed:", data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const products = [
     {
@@ -202,48 +224,38 @@ const ElectronicStore = () => {
                 <CloseOutlined className="w-6 h-6" />
               </button>
             </div>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <label className="block text-gray-700 mb-2">
-                  Vartotojo vardas
-                </label>
-                <div className="flex items-center">
-                  <UserOutlined className="text-gray-400 mr-2" />
-                  <input
-                    type="text"
-                    value={loginForm.username}
-                    onChange={(e) =>
-                      setLoginForm({ ...loginForm, username: e.target.value })
-                    }
-                    className="w-full p-2 border rounded-lg"
-                    placeholder="Įveskite vartotojo vardą"
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-gray-700 mb-2">Slaptažodis</label>
-                <div className="flex items-center">
-                  <LockOutlined className="text-gray-400 mr-2" />
-                  <input
-                    type="password"
-                    value={loginForm.password}
-                    onChange={(e) =>
-                      setLoginForm({ ...loginForm, password: e.target.value })
-                    }
-                    className="w-full p-2 border rounded-lg"
-                    placeholder="Įveskite slaptažodį"
-                    required
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+            <Form
+              form={form}
+              name="register"
+              onFinish={onFinish}
+              layout="vertical"
+            >
+              <FormItem
+                name="username"
+                label="Username"
+                rules={[
+                  { required: true, message: "Please input your username!" },
+                ]}
               >
-                Prisijungti
-              </button>
-            </form>
+                <Input />
+              </FormItem>
+
+              <FormItem
+                name="password"
+                label="Password"
+                rules={[
+                  { required: true, message: "Please input your password!" },
+                ]}
+              >
+                <Input.Password />
+              </FormItem>
+
+              <FormItem>
+                <Button type="primary" htmlType="submit">
+                  Register
+                </Button>
+              </FormItem>
+            </Form>
           </div>
         </div>
       )}

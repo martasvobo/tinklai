@@ -1,13 +1,12 @@
-version: '3.8'
-
 services:
-
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
     environment:
-      - VITE_API_URL=/api
+      - VITE_API_URL=http://backend:3000
+    ports:
+      - "80:80"
 
   backend:
     build:
@@ -18,8 +17,11 @@ services:
       - DB_USER=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
+    expose:
+      - 3000
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: mysql:8.0
@@ -31,6 +33,12 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
 
 volumes:
   mysql_data:

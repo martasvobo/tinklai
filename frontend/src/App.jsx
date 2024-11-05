@@ -1,16 +1,16 @@
-import { useState } from "react";
 import {
+  CloseOutlined,
   MessageOutlined,
   MinusOutlined,
   PlusOutlined,
   SendOutlined,
   ShoppingCartOutlined,
-  CloseOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Helmet } from "react-helmet";
 import { Button, Form, Input } from "antd";
 import FormItem from "antd/es/form/FormItem";
+import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 const ElectronicStore = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -24,7 +24,7 @@ const ElectronicStore = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await fetch("http://backend:3000/api/register", {
+      const response = await fetch(`/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,13 +65,6 @@ const ElectronicStore = () => {
       image: "speaker.jpg",
     },
   ];
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(true);
-    setShowLogin(false);
-    alert("Sėkmingai prisijungėte!");
-  };
 
   const handleLogout = () => {
     setIsLoggedIn(false);

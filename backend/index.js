@@ -9,10 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || "mysql",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: "mysql",
+  user: "user",
+  password: "userpassword",
+  database: "myapp",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -40,7 +40,7 @@ pool.query(
   CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
   )
 `,
   (err) => {
@@ -52,19 +52,11 @@ pool.query(
   }
 );
 
-pool.query(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-  )
-`);
-
 app.get("/", (req, res) => {
   res.json({ message: "Backend is running!" });
 });
 
-app.post("/api/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {

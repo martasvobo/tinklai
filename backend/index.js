@@ -35,22 +35,6 @@ pool.getConnection((err, connection) => {
   }
 });
 
-pool.query(
-  `
-  CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
-  )
-`,
-  (err) => {
-    if (err) {
-      console.error("Error creating table:", err);
-    } else {
-      console.log("Users table checked/created successfully");
-    }
-  }
-);
 
 app.get("/", (req, res) => {
   res.json({ message: "Backend is running!" });

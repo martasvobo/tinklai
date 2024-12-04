@@ -1,34 +1,20 @@
-import { CloseOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { CloseOutlined } from "@ant-design/icons";
 
-export default function Cart({ setShowCart }) {
-  const [cartItems, setCartItems] = useState([]);
-
+export default function Cart({ setShowCart, cartItems, fetchCartItems, user }) {
   const getTotalPrice = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.kaina * item.kiekis,
       0
     );
   };
   const removeFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
+    fetch(`http://localhost:3000/api/cart/${productId}`, {
+      method: "DELETE",
+    })
+      .then(() => fetchCartItems())
+      .catch((error) => console.error("Error removing item from cart:", error));
   };
 
-  const updateQuantity = (productId, delta) => {
-    setCartItems(
-      cartItems
-        .map((item) => {
-          if (item.id === productId) {
-            const newQuantity = Math.max(0, item.quantity + delta);
-            return newQuantity === 0
-              ? null
-              : { ...item, quantity: newQuantity };
-          }
-          return item;
-        })
-        .filter(Boolean)
-    );
-  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
@@ -51,23 +37,12 @@ export default function Cart({ setShowCart }) {
                 className="flex items-center justify-between py-4 border-b"
               >
                 <div>
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-gray-600">€{item.price}</p>
+                  <h3 className="font-semibold">{item.pavadinimas}</h3>
+                  <p className="text-gray-600">
+                    €{Number(item.kaina).toFixed(2)}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => updateQuantity(item.id, -1)}
-                    className="p-1 rounded-full hover:bg-gray-100"
-                  >
-                    <MinusOutlined className="w-4 h-4" />
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => updateQuantity(item.id, 1)}
-                    className="p-1 rounded-full hover:bg-gray-100"
-                  >
-                    <PlusOutlined className="w-4 h-4" />
-                  </button>
                   <button
                     onClick={() => removeFromCart(item.id)}
                     className="ml-2 text-red-500 hover:text-red-700"
@@ -83,7 +58,22 @@ export default function Cart({ setShowCart }) {
                 <span>€{getTotalPrice().toFixed(2)}</span>
               </div>
               <button
-                onClick={() => alert("Užsakymas pateiktas!")}
+                onClick={() => {
+                  fetch(`http://localhost:3000/api/cart/order/${user.id}`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(cartItems),
+                  })
+                    .then(() => fetchCartItems())
+                    .then(() => {
+                      alert("Užsakymas sėkmingai įvykdytas");
+                    })
+                    .catch((error) =>
+                      console.error("Error placing order:", error)
+                    );
+                }}
                 className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors"
               >
                 Užsakyti

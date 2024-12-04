@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import ItemForm from "./ItemForm";
 
-export default function Items({ user }) {
+export default function Items({ user, fetchCartItems }) {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showItemForm, setShowItemForm] = useState(false);
@@ -11,7 +10,7 @@ export default function Items({ user }) {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [user]);
 
   const fetchProducts = async () => {
     try {
@@ -51,18 +50,25 @@ export default function Items({ user }) {
   };
 
   const addToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
+    fetch("http://localhost:3000/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        itemId: product.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        alert("Prekė pridėta į krepšelį. ");
+        fetchCartItems();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Klaida pridedant prekę į krepšelį");
+      });
   };
 
   if (loading) {
@@ -91,7 +97,7 @@ export default function Items({ user }) {
           >
             {product.nuotrauka ? (
               <img
-                src={product.nuotrauka}
+                src={product.nuotrauka?.[0]?.thumbUrl ?? product.nuotrauka}
                 alt={product.pavadinimas}
                 className="w-full h-48 object-cover"
               />
@@ -104,27 +110,31 @@ export default function Items({ user }) {
               <h2 className="text-xl font-semibold text-gray-800">
                 {product.pavadinimas}
               </h2>
-              <p className="text-gray-600 mt-2">€{product.kaina}</p>
+              <p className="text-gray-600 mt-2">
+                €{Number(product.kaina).toFixed(2)}
+              </p>
               <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => addToCart(product)}
-                  className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-                >
-                  Įdėti į krepšelį
-                </button>
+                {user?.tipas == "klientas" && (
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+                  >
+                    Įdėti į krepšelį
+                  </button>
+                )}
                 {user?.tipas == "pardavejas" && (
                   <>
                     <button
                       onClick={() => setEditingId(product.id)}
                       className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors"
                     >
-                      Edit
+                      Keisti
                     </button>
                     <button
                       onClick={() => handleDelete(product.id)}
                       className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
                     >
-                      Delete
+                      Trinti
                     </button>
                   </>
                 )}

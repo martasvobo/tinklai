@@ -50,7 +50,7 @@ export default function Header({
                 Prisijungti
               </button>
             )}
-            {user && (
+            {user?.tipas == "klientas" && (
               <>
                 <button
                   onClick={() => setShowCart(true)}

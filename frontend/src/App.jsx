@@ -10,6 +10,7 @@ const ElectronicStore = () => {
   const [showCart, setShowCart] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [user, setUser] = useState(null);
+  console.log(user);
   return (
     <div className="min-h-screen bg-gray-50">
       <Header
@@ -19,10 +20,10 @@ const ElectronicStore = () => {
         user={user}
         setUser={setUser}
       />
-      <Items />
-      {showLogin && <LoginForm setShowLogin={setShowLogin} setUser={setUser}/>}
+      <Items user={user} />
+      {showLogin && <LoginForm setShowLogin={setShowLogin} setUser={setUser} />}
       {showCart && <Cart setShowCart={setShowCart} />}
-      {showChat && <Chat setShowChat={setShowChat} />}
+      {showChat && <Chat setShowChat={setShowChat} user={user} />}
     </div>
   );
 };

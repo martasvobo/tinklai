@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ItemForm from "./ItemForm";
 
-export default function Items() {
+export default function Items({ user }) {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -112,28 +112,34 @@ export default function Items() {
                 >
                   Įdėti į krepšelį
                 </button>
-                <button
-                  onClick={() => setEditingId(product.id)}
-                  className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(product.id)}
-                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
-                >
-                  Delete
-                </button>
+                {user?.tipas == "pardavejas" && (
+                  <>
+                    <button
+                      onClick={() => setEditingId(product.id)}
+                      className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
         ))}
-        <div
-          className="bg-white rounded-lg shadow-md overflow-hidden flex items-center justify-center min-h-[320px] cursor-pointer hover:bg-gray-50"
-          onClick={() => setShowItemForm(true)}
-        >
-          <div className="text-6xl text-gray-400">+</div>
-        </div>
+        {user?.tipas == "pardavejas" && (
+          <div
+            className="bg-white rounded-lg shadow-md overflow-hidden flex items-center justify-center min-h-[320px] cursor-pointer hover:bg-gray-50"
+            onClick={() => setShowItemForm(true)}
+          >
+            <div className="text-6xl text-gray-400">+</div>
+          </div>
+        )}
         <ItemForm
           visible={showItemForm || editingId}
           product={products.find((product) => product.id === editingId)}

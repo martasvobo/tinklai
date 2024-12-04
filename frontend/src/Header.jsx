@@ -50,18 +50,22 @@ export default function Header({
                 Prisijungti
               </button>
             )}
-            <button
-              onClick={() => setShowCart(true)}
-              className="relative p-2 text-gray-600 hover:text-gray-800"
-            >
-              <ShoppingCartOutlined className="w-6 h-6" size={12} />
-            </button>
-            <button
-              onClick={() => setShowChat(true)}
-              className="p-2 text-gray-600 hover:text-gray-800"
-            >
-              <MessageOutlined className="w-6 h-6" />
-            </button>
+            {user && (
+              <>
+                <button
+                  onClick={() => setShowCart(true)}
+                  className="relative p-2 text-gray-600 hover:text-gray-800"
+                >
+                  <ShoppingCartOutlined className="w-6 h-6" size={12} />
+                </button>
+                <button
+                  onClick={() => setShowChat(true)}
+                  className="p-2 text-gray-600 hover:text-gray-800"
+                >
+                  <MessageOutlined className="w-6 h-6" />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

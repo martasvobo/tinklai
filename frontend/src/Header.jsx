@@ -3,16 +3,16 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
 
 export default function Header({
   setShowLogin,
   setShowCart,
   setShowChat,
+  user,
+  setUser,
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setUser(null);
     alert("Sėkmingai atsijungėte!");
   };
 
@@ -27,14 +27,20 @@ export default function Header({
             <p className="text-gray-600">Martas Vobolis IFF 2-9</p>
           </div>
           <div className="flex gap-4 items-center">
-            {isLoggedIn ? (
-              <button
-                onClick={handleLogout}
-                className="text-gray-600 hover:text-gray-800 flex items-center gap-2"
-              >
-                <UserOutlined className="w-5 h-5" />
-                Atsijungti
-              </button>
+            {user ? (
+              <>
+                <div className="text-gray-600">
+                  <span className="font-medium">{user.vardas}</span>
+                  <span className="ml-2 text-sm">({user.tipas})</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-600 hover:text-gray-800 flex items-center gap-2"
+                >
+                  <UserOutlined className="w-5 h-5" />
+                  Atsijungti
+                </button>
+              </>
             ) : (
               <button
                 onClick={() => setShowLogin(true)}

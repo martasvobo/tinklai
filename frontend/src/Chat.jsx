@@ -76,7 +76,7 @@ export default function Chat({ setShowChat, user }) {
           <div
             key={index}
             className={`mb-4 p-3 bg-gray-100 rounded ${
-              msg.id === questionId ? "bg-blue-100" : ""
+              msg.id === questionId ? "bg-blue-300" : ""
             }`}
             onClick={() => setQuestionId(msg.id)}
           >

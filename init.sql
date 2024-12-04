@@ -57,4 +57,4 @@ INSERT INTO Vartotojas (tipas, vardas, slapazodis)
 VALUES ('klientas', 'klientas', '$2b$10$r9xvyAJzLkvp3Kd/Kr8ynOuIsXDa5Br/rJZTriZaBsHD.9iJx95SC');
 
 INSERT INTO Preke (pavadinimas, kaina, nuotrauka)
-VALUES ('Kolonėlė', 10.99, 'https://ksd-images.lt/display/aikido/cache/8494255d34658a2262023532c19a973f.jpeg?h=2000&w=2000');
+VALUES ('Grotuvas', 10.99, 'https://ksd-images.lt/display/aikido/cache/8494255d34658a2262023532c19a973f.jpeg?h=2000&w=2000');

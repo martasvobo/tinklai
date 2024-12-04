@@ -39,7 +39,7 @@ export default function Cart({ setShowCart, cartItems, fetchCartItems, user }) {
                 <div>
                   <h3 className="font-semibold">{item.pavadinimas}</h3>
                   <p className="text-gray-600">
-                    €{Number(item.kaina).toFixed(2)}
+                    €{Number(item.kaina).toFixed(2)} x {item.kiekis}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">

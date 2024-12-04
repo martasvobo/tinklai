@@ -72,14 +72,15 @@ router.post("/order/:userId", async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    const kainos = cartItems.map((item) => item.kaina).join(",");
+    const kainos = cartItems.map((item) => item.kaina.toFixed(2)).join(",");
     const kiekiai = cartItems.map((item) => item.kiekis).join(",");
     const prekes = cartItems.map((item) => item.preke_id).join(",");
 
-    const suma = cartItems.reduce(
+    let suma = cartItems.reduce(
       (acc, item) => acc + item.kaina * item.kiekis,
       0
     );
+    suma = suma.toFixed(2);
 
     const createOrderQuery =
       "INSERT INTO Uzsakymas (vartotojas_id, kainos, kiekiai, prekes, suma) VALUES (?, ?, ?, ?, ?)";

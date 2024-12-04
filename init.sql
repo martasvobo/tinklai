@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS myapp
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS myapp;
 USE myapp;
 
 CREATE TABLE Vartotojas (
@@ -57,4 +55,7 @@ INSERT INTO Vartotojas (tipas, vardas, slapazodis)
 VALUES ('klientas', 'klientas', '$2b$10$r9xvyAJzLkvp3Kd/Kr8ynOuIsXDa5Br/rJZTriZaBsHD.9iJx95SC');
 
 INSERT INTO Preke (pavadinimas, kaina, nuotrauka)
-VALUES ('Grotuvas', 10.99, 'https://ksd-images.lt/display/aikido/cache/8494255d34658a2262023532c19a973f.jpeg?h=2000&w=2000');
+VALUES
+('Grotuvas', 100.99, 'https://ksd-images.lt/display/aikido/cache/8494255d34658a2262023532c19a973f.jpeg?h=2000&w=2000'),
+('Telefonas', 999.99, 'https://picfit.topocentras.lt/xcdn-cgi/image/fit=contain,format=auto,quality=85/media/catalog/product/s/m/sm_a556_galaxy_a55_awesome_lilac_front_636981_1709297864.jpg'),
+('JBL', 159.99, 'https://www.avitela.lt/UserFiles/Products/Images/344660-518155-medium.png');

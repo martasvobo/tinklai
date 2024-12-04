@@ -2,7 +2,6 @@ import { useState } from "react";
 import Cart from "./Cart";
 import Chat from "./Chat";
 import Header from "./Header";
-import ItemForm from "./ItemForm";
 import Items from "./Items";
 import LoginForm from "./LoginForm";
 
@@ -21,7 +20,6 @@ const ElectronicStore = () => {
       {showLogin && <LoginForm setShowLogin={setShowLogin} />}
       {showCart && <Cart setShowCart={setShowCart} />}
       {showChat && <Chat setShowChat={setShowChat} />}
-      <ItemForm />
     </div>
   );
 };
